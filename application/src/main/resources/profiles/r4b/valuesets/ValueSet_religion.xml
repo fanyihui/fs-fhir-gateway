@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValueSet xmlns="http://hl7.org/fhir">
+	<id value="religion"/>
+	<!-- url:用于引用值集的url -->
+	<url value="http://example.org/fhir/ValueSet/religion"/>
+    <!--版本-->
+	<version value="1"/>
+	<!-- name：值集名称 -->
+	<name value="religion"/>
+	<!-- title:标题 -->
+	<title value="宗教信仰代码"/>
+	<!-- status:状态 -->
+	<status value="draft"/>
+	<!--  description：值集描述  -->
+	<description value="宗教信仰值集"/>
+	<!-- compose:宗教信仰值集的组成（自定义） -->
+	<compose>
+		<include>
+			<!-- system:引用的代码系统的url，这里是CodeSystem_religion.xml中的CodeSystem.url;包含该代码系统中的所有代码 -->
+			<system value="http://example.org/fhir/CodeSystem/religion"/>
+		</include>
+	</compose>
+</ValueSet>

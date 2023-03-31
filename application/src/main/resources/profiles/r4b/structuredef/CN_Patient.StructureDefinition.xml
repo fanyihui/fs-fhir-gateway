@@ -1,0 +1,56 @@
+<StructureDefinition xmlns="http://hl7.org/fhir">
+  <url value="http://example.org/fhir/StructureDefinition/CN_Patient"/>
+  <name value="CN_Patient"/>
+  <status value="draft"/>
+  <fhirVersion value="4.0.1"/>
+  <kind value="resource"/>
+  <abstract value="false"/>
+  <type value="Patient"/>
+  <baseDefinition value="http://hl7.org/fhir/StructureDefinition/Patient"/>
+  <derivation value="constraint"/>
+  <differential>
+    <element id="Patient.identifier">
+      <path value="Patient.identifier"/>
+      <slicing>
+        <discriminator>
+          <type value="type"/>
+          <path value="system"/>
+        </discriminator>
+        <description value="患者身份证号约束"/>
+        <rules value="open"/>
+      </slicing>
+      <min value="1"/>
+    </element>
+    <element id="Patient.identifier:ssnIdentifier">
+      <path value="Patient.identifier"/>
+      <sliceName value="ssnIdentifier"/>
+      <min value="1"/>
+    </element>
+    <element id="Patient.identifier:ssnIdentifier.system">
+      <path value="Patient.identifier.system"/>
+      <min value="1"/>
+      <fixedUri value="urn:oid:2.16.840.1.113883.2.23.1.9.1"/>
+    </element>
+    <element id="Patient.identifier:ssnIdentifier.value">
+      <path value="Patient.identifier.value"/>
+      <min value="1"/>
+    </element>
+    <element id="Patient.name">
+      <path value="Patient.name"/>
+      <min value="1"/>
+      <max value="1"/>
+    </element>
+    <element id="Patient.telecom">
+      <path value="Patient.telecom"/>
+      <min value="1"/>
+    </element>
+    <element id="Patient.gender">
+      <path value="Patient.gender"/>
+      <min value="1"/>
+    </element>
+    <element id="Patient.birthDate">
+      <path value="Patient.birthDate"/>
+      <min value="1"/>
+    </element>
+  </differential>
+</StructureDefinition>

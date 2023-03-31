@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeSystem xmlns="http://hl7.org/fhir">
+	<!-- 该代码系统是自定义的代码系统，包含常见的宗教代码及描述 -->
+	<id value="religion"/>
+	<meta>
+		<profile value="http://hl7.org/fhir/StructureDefinition/shareablecodesystem"/>
+	</meta>
+	<!-- url：用于引用该代码系统，全局唯一 -->
+	<url value="http://example.org/fhir/CodeSystem/religion"/>
+	<!--  identifier:代码系统标识符   -->
+	<identifier>
+		<system value="http://acme.com/identifiers/codesystems"/>
+		<value value="internal-cholesterol-inl"/>
+	</identifier>
+	<!--  version:该代码系统的版本    -->
+	<version value="20181220"/>
+	<!-- name:计算机可读 -->
+	<name value="Chinese Religion"/>
+	<!-- title：标题（人工可识别） -->
+	<title value="宗教代码"/>
+	<!-- status：状态 -->
+	<status value="draft"/>
+	<!-- experimental:是否用于实验 -->
+	<experimental value="true"/>
+	<!-- date：日期 -->
+	<date value="2018-12-20"/>
+	<!-- publisher：发布人 -->
+	<publisher value="卫健委"/>
+	<!-- contact：联系方法 -->
+	<contact>
+		<name value="FHIR project team"/>
+		<telecom>
+			<system value="phone"/>
+			<value value="13660114532"/>
+		</telecom>
+	</contact>
+	<!-- description：值集描述  -->
+	<description value="This is an example code system that includes religion code in china"/>
+	<!--  caseSensitive:是否大小写敏感  -->
+	<caseSensitive value="true"/>
+	<content value="complete"/>
+	<!--   filter: 设置过滤条件，需要定义代码才能使用，因此一般只在复杂的代码系统中使用    -->
+	<filter>
+		<code value="acme-plasma"/>
+		<description value="An internal filter used to select codes that are only used with plasma"/>
+		<operator value="="/>
+		<value value="the value of this filter is either 'true' or 'false'"/>
+	</filter>
+	<!--   concpt:定义该代码系统中的代码，描述等信息 -->
+	<concept>
+		<code value="00"/>
+		<display value="无"/>
+	</concept>
+	<concept>
+		<code value="10"/>
+		<display value="佛教"/>
+	</concept>
+	<concept>
+		<code value="20"/>
+		<display value="喇嘛教"/>
+	</concept>
+	<concept>
+		<code value="30"/>
+		<display value="道教"/>
+	</concept>
+	<concept>
+		<code value="40"/>
+		<display value="天主教"/>
+	</concept>
+	<concept>
+		<code value="50"/>
+		<display value="基督教"/>
+	</concept>
+	<concept>
+		<code value="60"/>
+		<display value="东正教"/>
+	</concept>
+	<concept>
+		<code value="70"/>
+		<display value="伊斯兰教"/>
+	</concept>
+	<concept>
+		<code value="99"/>
+		<display value="其他"/>
+	</concept>
+</CodeSystem>
