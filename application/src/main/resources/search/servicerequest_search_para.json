@@ -1,0 +1,82 @@
+{
+  "ServiceRequest": {
+    "body-site": {
+      "name": "body-site",
+      "type": "token",
+      "path": "bodySite",
+      "dataType": "CodeableConcept"
+    },
+    "category": {
+      "name": "category",
+      "type": "token",
+      "path": "category",
+      "dataType": "CodeableConcept"
+    },
+    "code": {
+      "name": "code",
+      "type": "token",
+      "path": "code",
+      "dataType": "CodeableConcept"
+    },
+    "date": {
+      "name": "date",
+      "type": "date",
+      "path": "period",
+      "dataType": "Period"
+    },
+    "encounter": {
+      "name": "encounter",
+      "type": "reference",
+      "path": "encounter",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Encounter"
+      ]
+    },
+    "identifier": {
+      "name": "identifier",
+      "type": "token",
+      "path": "identifier",
+      "dataType": "Identifier"
+    },
+    "patient": {
+      "name": "patient",
+      "type": "reference",
+      "path": "subject",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Patient"
+      ]
+    },
+    "performer": {
+      "name": "performer",
+      "type": "reference",
+      "path": "performer",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Practitioner",
+        "Organization",
+        "CareTeam",
+        "Device",
+        "Patient",
+        "HealthcareService",
+        "PractitionerRole",
+        "RelatedPerson"
+      ]
+    },
+    "requester": {
+      "name": "requester",
+      "type": "reference",
+      "path": "requester",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Practitioner",
+        "Organization",
+        "Device",
+        "Patient",
+        "PractitionerRole",
+        "RelatedPerson"
+      ]
+    }
+  }
+}

@@ -2,52 +2,32 @@ package com.fs.hc.fhir.core.resprocessor;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.model.valueset.BundleTypeEnum;
-import ca.uhn.fhir.parser.IParser;
-import ca.uhn.fhir.parser.StrictErrorHandler;
+import ca.uhn.fhir.validation.FhirValidator;
 import com.fs.hc.fhir.core.model.FhirIssueType;
 import com.fs.hc.fhir.core.model.SupportedFhirVersionEnum;
-import org.apache.camel.converter.stream.InputStreamCache;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.instance.model.api.IBaseOperationOutcome;
 import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
+import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.OperationOutcome;
+import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r4.model.ResourceType;
 
-import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
-@Component
-@ConditionalOnProperty(
-        value = "com.fs.hc.fhir.gateway.fhirVersions",
-        havingValue = "4.0",
-        matchIfMissing = true
-)
-public class FhirResourceR4Builder implements IFhirResourceBuilder{
-    private FhirContext fhirR4Context;
-    private IParser jsonParser;
-    private IParser xmlParser;
 
-    public FhirResourceR4Builder(FhirContext fhirContext) {
-        this.fhirR4Context = fhirContext;
-        jsonParser = fhirR4Context.newJsonParser();
-        xmlParser = fhirR4Context.newXmlParser();
-
-        jsonParser.setParserErrorHandler(new StrictErrorHandler());
-        jsonParser.setSuppressNarratives(false);
-        jsonParser.setPrettyPrint(true);
-        jsonParser.setSummaryMode(false);
-
-        xmlParser.setParserErrorHandler(new StrictErrorHandler());
-        xmlParser.setSuppressNarratives(false);
-        xmlParser.setPrettyPrint(true);
-        xmlParser.setSummaryMode(false);
+public class FhirResourceR4Builder extends AbstractFhirResourceBuilder {
+    public FhirResourceR4Builder(FhirContext fhirContext, FhirValidator fhirValidator, HashMap<String, HashMap<String, List<String>>> compartmentDefinitionMap, Properties defaultProfileProperties) {
+        super(fhirContext, fhirValidator, compartmentDefinitionMap, defaultProfileProperties);
     }
 
     @Override
     public void validateFhirResourceType(String resourceType) throws FHIRException {
-
+        ResourceType.fromCode(resourceType);
     }
 
     @Override
@@ -57,36 +37,44 @@ public class FhirResourceR4Builder implements IFhirResourceBuilder{
 
     @Override
     public IBaseOperationOutcome createOperationOutcomeForException(String diagnosis, FhirIssueType fhirIssueType) {
-        return null;
+        return createOperationOutcome(diagnosis, OperationOutcome.IssueSeverity.ERROR, fhirIssueType);
     }
 
     @Override
     public IBaseOperationOutcome createOperationOutcomeForInfo(String info, FhirIssueType fhirIssueType) {
-        return null;
+        return createOperationOutcome(info, OperationOutcome.IssueSeverity.INFORMATION, fhirIssueType);
     }
 
     @Override
     public IBaseBundle createBundle(BundleTypeEnum bundleTypeEnum, List<IBaseResource> resourceList) {
-        return null;
+        Bundle bundle = new Bundle();
+        int total = (resourceList!=null) ? resourceList.size() : 0;
+        bundle.setTotal(total);
+        bundle.setType(Bundle.BundleType.fromCode(bundleTypeEnum.getCode()));
+
+        Iterator<IBaseResource> resourceIterator = resourceList.iterator();
+        while (resourceIterator.hasNext()){
+            IBaseResource resource = resourceIterator.next();
+            Bundle.BundleEntryComponent entryComponent = new Bundle.BundleEntryComponent();
+
+            Bundle.BundleEntryResponseComponent responseComponent = new Bundle.BundleEntryResponseComponent();
+            responseComponent.setStatus("200");
+            entryComponent.setResponse(responseComponent);
+            entryComponent.setResource((Resource) resource);
+
+            bundle.addEntry(entryComponent);
+        }
+
+        return bundle;
     }
 
-    @Override
-    public String encodeResource(String mimeType, IBaseResource resource) {
-        return null;
-    }
-
-    @Override
-    public IBaseResource decodeResource(String mimeType, InputStream inputStream) {
-        return null;
-    }
-
-    @Override
-    public IBaseResource decodeResource(String mimeType, InputStreamCache body) {
-        return null;
-    }
-
-    @Override
-    public IBaseResource decodeResource(String mimeType, String body) {
-        return null;
+    private IBaseOperationOutcome createOperationOutcome(String message, OperationOutcome.IssueSeverity issueSeverity, FhirIssueType fhirIssueType){
+        OperationOutcome operationOutcome = new OperationOutcome();
+        OperationOutcome.OperationOutcomeIssueComponent component = new OperationOutcome.OperationOutcomeIssueComponent();
+        component.setSeverity(issueSeverity);
+        component.setCode(OperationOutcome.IssueType.fromCode(fhirIssueType.toCode()));
+        component.setDiagnostics(message);
+        operationOutcome.addIssue(component);
+        return operationOutcome;
     }
 }

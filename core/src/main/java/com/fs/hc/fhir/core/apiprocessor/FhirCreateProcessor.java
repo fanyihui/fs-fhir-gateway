@@ -3,13 +3,11 @@ package com.fs.hc.fhir.core.apiprocessor;
 import ca.uhn.fhir.parser.DataFormatException;
 import com.fs.hc.fhir.core.model.FhirConstant;
 import com.fs.hc.fhir.core.model.SupportedFhirVersionEnum;
-import com.fs.hc.fhir.core.resprocessor.FhirResourceBuilderStrategy;
-import com.fs.hc.fhir.core.util.IdGenerator;
+import com.fs.hc.fhir.core.resprocessor.FhirVersionStrategy;
 import org.apache.camel.Exchange;
 import org.apache.camel.converter.stream.InputStreamCache;
 import org.hl7.fhir.instance.model.api.IBaseMetaType;
 import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.hl7.fhir.instance.model.api.IIdType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +16,7 @@ import java.util.Date;
 @Component
 public class FhirCreateProcessor {
     @Autowired
-    FhirResourceBuilderStrategy fhirResourceBuilderStrategy;
+    FhirVersionStrategy fhirVersionStrategy;
 
     public void createProcess(Exchange exchange) throws DataFormatException {
         String mimeType = exchange.getIn().getHeader(FhirConstant.FHIR_MIMETYPE_HEADER, String.class);
@@ -30,7 +28,7 @@ public class FhirCreateProcessor {
         }
 
         try{
-            IBaseResource resource = fhirResourceBuilderStrategy.getFhirResourceBuilder(supportedFhirVersionEnum).decodeResource(mimeType, inputStreamCache);
+            IBaseResource resource = fhirVersionStrategy.getFhirResourceBuilder(supportedFhirVersionEnum).decodeResource(mimeType, inputStreamCache);
 
             //Put version to the resource
             IBaseMetaType metaType = resource.getMeta();

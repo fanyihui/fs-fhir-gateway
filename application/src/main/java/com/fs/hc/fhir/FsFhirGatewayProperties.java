@@ -12,10 +12,11 @@ import java.util.List;
 public class FsFhirGatewayProperties {
     private List<String> fhirVersions;
     private String host;
-    private int port = 8081;
+    private int port = 8084;
     private boolean usingClientGeneratedId = false;
     private boolean responsePayload4Delete = true;
     private boolean defaultProfileValidation = false;
+
 
     public List<String> getFhirVersions() {
         return fhirVersions;

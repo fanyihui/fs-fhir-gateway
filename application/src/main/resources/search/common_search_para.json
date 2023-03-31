@@ -1,0 +1,42 @@
+{
+  "Common": {
+    "_content": {
+      "name": "_content",
+      "type": "string"
+    },
+    "_id": {
+      "name": "_id",
+      "type": "token",
+      "path": "id"
+    },
+    "_lastUpdated": {
+      "name": "_lastUpdated",
+      "type": "date",
+      "path": "meta.lastUpdated"
+    },
+    "_profile": {
+      "name": "_profile",
+      "type": "date",
+      "path": "meta.profile"
+    },
+    "_security": {
+      "name": "_security",
+      "type": "token",
+      "path": "meta.security"
+    },
+    "_source": {
+      "name": "_source",
+      "type": "uri",
+      "path": "meta.source"
+    },
+    "_tag": {
+      "name": "_tag",
+      "type": "token",
+      "path": "meta.tag"
+    },
+    "_text": {
+      "name": "_text",
+      "type": "string"
+    }
+  }
+}

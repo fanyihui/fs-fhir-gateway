@@ -1,0 +1,10 @@
+{
+  "StructureDefinition": {
+    "type": {
+      "name": "type",
+      "type": "uri",
+      "path": "type",
+      "dataType": "uri"
+    }
+  }
+}

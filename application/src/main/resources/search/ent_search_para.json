@@ -1,0 +1,188 @@
+{
+  "Encounter": {
+    "account": {
+      "name": "account",
+      "type": "reference",
+      "path": "account",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Account"
+      ]
+    },
+    "appointment": {
+      "name": "appointment",
+      "type": "reference",
+      "path": "appointment",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Appointment"
+      ]
+    },
+    "based-on": {
+      "name": "based-on",
+      "type": "reference",
+      "path": "basedOn",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "ServiceRequest"
+      ]
+    },
+    "class": {
+      "name": "class",
+      "type": "token",
+      "path": "class",
+      "dataType": "Coding"
+    },
+    "date": {
+      "name": "date",
+      "type": "date",
+      "path": "period",
+      "dataType": "Period"
+    },
+    "diagnosis": {
+      "name": "diagnosis",
+      "type": "reference",
+      "path": "diagnosis.condition",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Condition",
+        "Procedure"
+      ]
+    },
+    " episode-of-care": {
+      "name": " episode-of-care",
+      "type": "reference",
+      "path": "episodeOfCare",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "EpisodeOfCare"
+      ]
+    },
+    "identifier": {
+      "name": "identifier",
+      "type": "token",
+      "path": "identifier",
+      "dataType": "Identifier"
+    },
+    "length": {
+      "name": "length",
+      "type": "quantity",
+      "path": "length",
+      "dataType": "Quantity"
+    },
+    "location": {
+      "name": "location",
+      "type": "reference",
+      "path": "location.location",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Location"
+      ]
+    },
+    "location-period": {
+      "name": "location-period",
+      "type": "date",
+      "path": "location.period",
+      "dataType": "Period"
+    },
+    "part-of": {
+      "name": "part-of",
+      "type": "reference",
+      "path": "partOf",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Encounter"
+      ]
+    },
+    "participant": {
+      "name": "participant",
+      "type": "reference",
+      "path": "participant.individual",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Practitioner",
+        "PractitionerRole",
+        "RelatedPerson"
+      ]
+    },
+    "participant-type": {
+      "name": "participant-type",
+      "type": "token",
+      "path": "participant.type",
+      "dataType": "CodeableConcept"
+    },
+    "patient": {
+      "name": "patient",
+      "type": "reference",
+      "path": "subject",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Patient"
+      ]
+    },
+    "practitioner": {
+      "name": "practitioner",
+      "type": "reference",
+      "path": "participant.individual",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Practitioner"
+      ]
+    },
+    "reason-code": {
+      "name": "reason-code",
+      "type": "reference",
+      "path": "reasonCode",
+      "dataType": "CodeableConcept"
+    },
+    "reason-reference": {
+      "name": "reason-reference",
+      "type": "reference",
+      "path": "reasonCode",
+      "dataType": "CodeableConcept",
+      "referenceTypes": [
+        "Condition",
+        "Observation",
+        "Procedure",
+        "ImmunizationRecommendation"
+      ]
+    },
+    "service-provider": {
+      "name": "service-provider",
+      "type": "reference",
+      "path": "serviceProvider",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Organization"
+      ]
+    },
+    "special-arrangement": {
+      "name": "special-arrangement",
+      "type": "token",
+      "path": "hospitalization.specialArrangement",
+      "dataType": "CodeableConcept"
+    },
+    "status": {
+      "name": "status",
+      "type": "token",
+      "path": "status",
+      "dataType": "code"
+    },
+    "subject": {
+      "name": "subject",
+      "type": "reference",
+      "path": "subject",
+      "dataType": "Reference",
+      "referenceTypes": [
+        "Group",
+        "Patient"
+      ]
+    },
+    "type": {
+      "name": "type",
+      "type": "token",
+      "path": "type",
+      "dataType": "CodeableConcept"
+    }
+  }
+}

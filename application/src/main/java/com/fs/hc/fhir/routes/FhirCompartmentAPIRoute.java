@@ -21,7 +21,7 @@ public class FhirCompartmentAPIRoute extends FsBaseRoute {
     @Override
     public void configure() throws Exception {
         super.configure();
-        from("direct:searchCompartment").
+        from("direct:searchCompartment").id("search-compartment").
                 bean(fhirAPIProcessor, "process").
                 bean(fhirReadCompartmentProcessor, "readCompartmentProcessor").
                 bean(businessService, "searchCompartment('${header.compartmentType}', '${header.id}', '${header.type}', '${header.resourceParams}','${header.searchConditions}')").

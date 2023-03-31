@@ -1,40 +1,17 @@
-package com.fs.hc.fhir.core.apiprocessor;
+package com.fs.hc.fhir.core.resprocessor;
 
 import ca.uhn.fhir.validation.FhirValidator;
 import ca.uhn.fhir.validation.ValidationOptions;
 import ca.uhn.fhir.validation.ValidationResult;
-import com.fs.hc.fhir.gateway.FsFhirGatewayProperties;
-import com.fs.hc.fhir.gateway.exception.FhirResourceValidationException;
-import org.apache.camel.Exchange;
+import com.fs.hc.fhir.core.exception.FhirResourceValidationException;
 import org.hl7.fhir.instance.model.api.IBaseMetaType;
 import org.hl7.fhir.instance.model.api.IBaseOperationOutcome;
 import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Properties;
 
-@Component
 public class FhirResourceValidation {
-    @Autowired
-    FhirValidator fhirValidator;
-    @Autowired
-    Properties resourceProfileProperties;
-    @Autowired
-    FsFhirGatewayProperties fsFhirGatewayProperties;
-
-    public void validateResource(Exchange exchange) throws FhirResourceValidationException {
-        Object body = exchange.getIn().getBody();
-        IBaseResource baseResource;
-
-        baseResource = body instanceof IBaseResource ? ((IBaseResource) body) : null;
-
-        if (baseResource == null){
-            //TODO throw an exception
-            return;
-        }
-
+    public static void validateResource(IBaseResource baseResource, FhirValidator fhirValidator, String profileUrl) throws FhirResourceValidationException {
         ValidationResult validationResult = null;
         String resourceType = baseResource.fhirType();
 
@@ -46,13 +23,10 @@ public class FhirResourceValidation {
         }
 
         if ((profiles == null || profiles.size() == 0) ) {
-            //Get the default profile defined in the configuration file for specific resource type
-            String defaultProfileUrl = resourceProfileProperties.getProperty(resourceType);
-
-            if (defaultProfileUrl == null || !fsFhirGatewayProperties.isDefaultProfileValidation()) {
+            if (profileUrl == null) {
                 validationResult = fhirValidator.validateWithResult(baseResource);
             } else {
-                validationResult = fhirValidator.validateWithResult(baseResource, new ValidationOptions().addProfile(defaultProfileUrl));
+                validationResult = fhirValidator.validateWithResult(baseResource, new ValidationOptions().addProfile(profileUrl));
             }
         } else {
             ValidationOptions validationOptions = new ValidationOptions();

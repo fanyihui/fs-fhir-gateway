@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+            http://camel.apache.org/schema/spring
+            http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <rest path="/Location">
+        <get path="/{id}" id="rest-get-loc-by-id" produces="application/fhir+json,application/fhir+xml">
+            <description>获取指定id的Location资源实例</description>
+            <param name="id" type="path" dataType="String" description="Location资源的id"/>
+            <to uri="direct:readResourceById"/>
+        </get>
+        <post id="rest-create-new-location" consumes="application/fhir+json,application/fhir+xml" produces="application/fhir+json,application/fhir+xml">
+            <description>创建新的Location资源实例</description>
+            <param name="body" type="body" description="Location资源实例，支持XML和JSON格式"/>
+            <responseMessage message="Create Location Successfully" code="201"/>
+            <to uri="direct:createNewResource"/>
+        </post>
+        <post path="/_search" id="rest-search-location" consumes="application/x-www-form-urlencoded" produces="application/fhir+json,application/fhir+xml">
+            <description>查询Location资源</description>
+            <to uri="direct:searchResources"/>
+        </post>
+        <put path="/{id}" id="rest-put-location" consumes="application/fhir+json,application/fhir+xml" produces="application/fhir+json,application/fhir+xml">
+            <description>更新指定id的location资源</description>
+            <param name="body" type="body" description="Location资源实例，支持XML和JSON格式，资源实例必须包含id，而且和url中的id保持一致"/>
+            <param name="id" type="path" dataType="String"/>
+            <to uri="direct:updateResource"/>
+        </put>
+        <delete path="/{id}" id="rest-delete-location">
+            <description>删除指定id的Location资源</description>
+            <param name="id" type="path" dataType="String"/>
+            <to uri="direct:deleteResourceById"/>
+        </delete>
+    </rest>
+
+</rests>

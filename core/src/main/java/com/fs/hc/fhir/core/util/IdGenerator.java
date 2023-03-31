@@ -2,7 +2,7 @@ package com.fs.hc.fhir.core.util;
 
 import org.springframework.stereotype.Component;
 
-@Component
+
 public class IdGenerator {
     // 起始的时间戳
     private final static long START_STMP = 1480166465631L;

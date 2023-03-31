@@ -1,0 +1,68 @@
+{
+  "Composition": {
+    "attester": {
+      "name": "attester",
+      "type": "reference",
+      "path": "attester.party",
+      "referenceTypes": ["Practitioner", "Organization", "PractitionerRole", "Patient", "RelatedPerson"],
+      "dataType": "Reference"
+    },
+    "author": {
+      "name": "author",
+      "type": "reference",
+      "path": "author",
+      "referenceTypes": ["Practitioner", "Organization", "PractitionerRole", "Device", "Patient", "RelatedPerson"],
+      "dataType": "Reference"
+    },
+    "category": {
+      "name": "category",
+      "type": "token",
+      "path": "category",
+      "dataType": "CodeableConcept"
+    },
+    "context": {
+      "name": "context",
+      "type": "token",
+      "path": "event.code",
+      "dataType": "CodeableConcept"
+    },
+    "date": {
+      "name": "date",
+      "type": "date",
+      "path": "date",
+      "dataType": "dateTime"
+    },
+    "encounter": {
+      "name": "encounter",
+      "type": "reference",
+      "path": "encounter",
+      "referenceTypes": ["Encounter"],
+      "dataType": "Reference"
+    },
+    "identifier": {
+      "name": "identifier",
+      "type": "token",
+      "path": "identifier",
+      "dataType": "Identifier"
+    },
+    "patient": {
+      "name": "patient",
+      "type": "reference",
+      "path": "subject",
+      "referenceTypes": ["Patient"],
+      "dataType": "Reference"
+    },
+    "title": {
+      "name": "title",
+      "type": "string",
+      "path": "title",
+      "dataType": "string"
+    },
+    "type": {
+      "name": "type",
+      "type": "token",
+      "path": "type",
+      "dataType": "CodeableConcept"
+    }
+  }
+}

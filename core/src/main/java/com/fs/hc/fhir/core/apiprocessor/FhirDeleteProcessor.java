@@ -4,8 +4,7 @@ package com.fs.hc.fhir.core.apiprocessor;
 import com.fs.hc.fhir.core.exception.InternalSystemException;
 import com.fs.hc.fhir.core.model.FhirConstant;
 import com.fs.hc.fhir.core.model.SupportedFhirVersionEnum;
-import com.fs.hc.fhir.core.resprocessor.FhirResourceBuilderStrategy;
-import com.fs.hc.fhir.core.resprocessor.IFhirResourceBuilder;
+import com.fs.hc.fhir.core.resprocessor.FhirVersionStrategy;
 import org.apache.camel.Exchange;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FhirDeleteProcessor {
     @Autowired
-    FhirResourceBuilderStrategy fhirResourceBuilderStrategy;
+    FhirVersionStrategy fhirVersionStrategy;
 
     public void deleteProcess(Exchange exchange) throws InternalSystemException {
         String uri = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
@@ -26,7 +25,7 @@ public class FhirDeleteProcessor {
 
         if (resourceType != null){
             try{
-                fhirResourceBuilderStrategy.getFhirResourceBuilder(fhirVersion).validateFhirResourceType(resourceType);
+                fhirVersionStrategy.getFhirResourceBuilder(fhirVersion).validateFhirResourceType(resourceType);
             } catch (FHIRException fhirException){
                 throw fhirException;
             }

@@ -1,0 +1,23 @@
+{
+  "Location": {
+    "name": {
+      "name": "name",
+      "type": "string",
+      "path": "name",
+      "dataType": "string"
+    },
+    "identifier": {
+      "name": "identifier",
+      "type": "token",
+      "path": "identifier",
+      "dataType": "Identifier"
+    },
+    "partof": {
+      "name": "partof",
+      "type": "reference",
+      "path": "partOf",
+      "referenceTypes": ["Location"],
+      "dataType": "Reference"
+    }
+  }
+}

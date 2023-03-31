@@ -1,0 +1,144 @@
+{
+  "Patient": {
+    "active": {
+      "name": "active",
+      "type": "token",
+      "path": "active",
+      "dataType": "boolean"
+    },
+    "address": {
+      "name": "address",
+      "type": "string",
+      "path": "address",
+      "dataType": "Address"
+    },
+    "address-city": {
+      "name": "address-city",
+      "type": "string",
+      "path": "address.city",
+      "dataType": "string"
+    },
+    "address-country": {
+      "name": "address-country",
+      "type": "string",
+      "path": "address.country",
+      "dataType": "code"
+    },
+    "address-postalcode": {
+      "name": "address-postalcode",
+      "type": "string",
+      "path": "address.postalCode",
+      "dataType": "string"
+    },
+    "address-state": {
+      "name": "address-state",
+      "type": "string",
+      "path": "address.state"
+    },
+    "address-use": {
+      "name": "address-use",
+      "type": "token",
+      "path": "address.use",
+      "dataType": "code"
+    },
+    "birthdate": {
+      "name": "birthdate",
+      "type": "date",
+      "path": "birthDate",
+      "dataType": "date"
+    },
+    "death-date": {
+      "name": "death-date",
+      "type": "date",
+      "path": "deceasedDateTime",
+      "dataType": "dateTime"
+    },
+    "deceased": {
+      "name": "deceased",
+      "type": "token",
+      "path": "deceasedBoolean",
+      "dataType": "boolean"
+    },
+    "telecom": {
+      "name": "telecom",
+      "type": "token",
+      "path": "telecom",
+      "dataType": "ContactPoint"
+    },
+    "email": {
+      "name": "email",
+      "type": "token",
+      "path": "telecom",
+      "restrict": "system=email",
+      "dataType": "ContactPoint"
+    },
+    "phone": {
+      "name": "phone",
+      "type": "token",
+      "path": "telecom",
+      "restrict": "system=phone",
+      "dataType": "ContactPoint"
+    },
+    "name": {
+      "name": "name",
+      "type": "string",
+      "path": "name",
+      "dataType": "HumanName"
+    },
+    "family": {
+      "name": "family",
+      "type": "string",
+      "path": "name.family",
+      "dataType": "string"
+    },
+    "given": {
+      "name": "given",
+      "type": "string",
+      "path": "name.given",
+      "dataType": "string"
+    },
+    "phonetic": {
+      "name": "phonetic",
+      "type": "string",
+      "path": "name",
+      "dataType": "HumanName"
+    },
+    "gender": {
+      "name": "gender",
+      "type": "token",
+      "path": "gender",
+      "dataType": "code"
+    },
+    "general-practitioner": {
+      "name": "general-practitioner",
+      "type": "reference",
+      "path": "generalPractitioner",
+      "referenceTypes": ["Practitioner", "Organization", "PractitionerRole"],
+      "dataType": "Reference"
+    },
+    "identifier": {
+      "name": "identifier",
+      "type": "token",
+      "path": "identifier",
+      "dataType": "Identifier"
+    },
+    "language": {
+      "name": "language",
+      "type": "token",
+      "path": "communication.language",
+      "dataType": "code"
+    },
+    "link": {
+      "name": "link",
+      "type": "reference",
+      "path": "link.other",
+      "referenceTypes": ["Patient", "RelatedPerson"]
+    },
+    "organization": {
+      "name": "organization",
+      "type": "reference",
+      "path": "managingOrganization",
+      "referenceTypes": ["Organization"]
+    }
+  }
+}

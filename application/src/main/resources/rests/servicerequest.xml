@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+            http://camel.apache.org/schema/spring
+            http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <rest path="/ServiceRequest">
+        <get path="/{id}" id="rest-get-servicerequest-by-id" produces="application/fhir+json,application/fhir+xml">
+            <description>通过指定的逻辑ID获取对应的服务请求资源实例</description>
+            <param name="id" type="path" dataType="String" description="服务请求资源的id"/>
+            <to uri="direct:readResourceById"/>
+        </get>
+        <get path="/{id}/_history/{vid}" id="rest-get-servicerequest-by-vid" produces="application/fhir+json,application/fhir+xml">
+            <description>获取指定id服务请求资源的某一个版本的实例</description>
+            <param name="id" type="path" dataType="String" description="服务请求资源的id"/>
+            <param name="vid" type="path" dataType="String" description="版本号"/>
+            <to uri="direct:vReadResourceById"/>
+        </get>
+        <!--get uri="/{id}/_history" id="rest-get-servicerequest-history" produces="application/fhir+json,application/fhir+xml">
+
+        </get-->
+        <post id="rest-create-new-servicerequest" consumes="application/fhir+json,application/fhir+xml" produces="application/fhir+json,application/fhir+xml">
+            <description>创建新服务请求资源</description>
+            <param name="body" type="body" description="HL7 FHIR资源，支持XML和JSON两种格式"/>
+            <responseMessage message="成功创建服务请求（比如：检查检验申请）资源" code="201"/>
+            <to uri="direct:createNewResource"/>
+        </post>
+        <post path="/_search" id="rest-search-servicerequest" consumes="application/x-www-form-urlencoded" produces="application/fhir+json,application/fhir+xml">
+            <description>查询服务请求（比如：检查检验申请）资源</description>
+            <param name="body" type="body"/>
+            <to uri="direct:searchResources"/>
+        </post>
+        <put path="/{id}" id="rest-put-servicerequest" consumes="application/fhir+json,application/fhir+xml" produces="application/fhir+json,application/fhir+xml">
+            <description>通过指定的id更新服务请求资源</description>
+            <param name="body" type="body" description="HL7 FHIR资源，支持XML和JSON两种格式，uri中的id必须和ServiceRequest实例中的id保持一致"/>
+            <param name="id" type="path" dataType="String"/>
+            <to uri="direct:updateResource"/>
+        </put>
+        <delete path="/{id}" id="rest-delete-servicerequest">
+            <description>删除指定id的服务请求资源</description>
+            <param name="id" type="path" dataType="String"/>
+            <to uri="direct:deleteResourceById"/>
+        </delete>
+    </rest>
+
+</rests>

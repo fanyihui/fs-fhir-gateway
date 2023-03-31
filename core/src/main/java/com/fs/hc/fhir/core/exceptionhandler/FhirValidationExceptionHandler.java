@@ -1,11 +1,12 @@
 package com.fs.hc.fhir.core.exceptionhandler;
 
 import ca.uhn.fhir.parser.DataFormatException;
-import com.fs.hc.fhir.gateway.exception.FhirResourceValidationException;
-import com.fs.hc.fhir.gateway.fhirprocessor.FhirConstant;
-import com.fs.hc.fhir.gateway.model.FhirIssueType;
-import com.fs.hc.fhir.gateway.util.FhirUtil;
-import com.fs.hc.fhir.gateway.util.SupportedFhirVersionEnum;
+import com.fs.hc.fhir.core.exception.FhirResourceValidationException;
+import com.fs.hc.fhir.core.model.FhirConstant;
+import com.fs.hc.fhir.core.model.FhirIssueType;
+import com.fs.hc.fhir.core.model.SupportedFhirVersionEnum;
+import com.fs.hc.fhir.core.resprocessor.FhirVersionStrategy;
+import com.fs.hc.fhir.core.resprocessor.AbstractFhirResourceBuilder;
 import org.apache.camel.CamelExecutionException;
 import org.apache.camel.Exchange;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -21,7 +22,7 @@ public class FhirValidationExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(FhirValidationExceptionHandler.class);
 
     @Autowired
-    FhirUtil fhirUtil;
+    FhirVersionStrategy fhirVersionStrategy;
 
     public void handleFhirDataFormatException(Exchange exchange){
         DataFormatException dataFormatException = null;
@@ -36,14 +37,15 @@ public class FhirValidationExceptionHandler {
 
         SupportedFhirVersionEnum supportedFhirVersionEnum = exchange.getIn().getHeader(FhirConstant.FHIR_VERSION_HEADER, SupportedFhirVersionEnum.class);
         String mimeType = exchange.getIn().getHeader(FhirConstant.FHIR_MIMETYPE_HEADER, String.class);
+        AbstractFhirResourceBuilder fhirResourceBuilder = fhirVersionStrategy.getFhirResourceBuilder(supportedFhirVersionEnum);
 
         try {
-            IBaseOperationOutcome operationOutcome = fhirUtil.createOperationOutcome(supportedFhirVersionEnum, dataFormatException.getMessage(), FhirIssueType.NOTSUPPORTED);
+            IBaseOperationOutcome operationOutcome = fhirResourceBuilder.createOperationOutcomeForException(dataFormatException.getMessage(), FhirIssueType.NOTSUPPORTED);
 
-            String body = fhirUtil.encodeResource(mimeType, operationOutcome);
-            exchange.getOut().setHeader(Exchange.CONTENT_TYPE, mimeType);
-            exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, "404");
-            exchange.getOut().setBody(body);
+            String body = fhirResourceBuilder.encodeResource(mimeType, operationOutcome);
+            exchange.getMessage().setHeader(Exchange.CONTENT_TYPE, mimeType);
+            exchange.getMessage().setHeader(Exchange.HTTP_RESPONSE_CODE, "404");
+            exchange.getMessage().setBody(body);
         } catch (FHIRException fe){
             logger.error("", fe);
         }
@@ -52,16 +54,19 @@ public class FhirValidationExceptionHandler {
     public void handleFhirProfileValidationException(Exchange exchange){
         String mimeType = exchange.getIn().getHeader(FhirConstant.FHIR_MIMETYPE_HEADER, String.class);
 
+        SupportedFhirVersionEnum supportedFhirVersionEnum = exchange.getIn().getHeader(FhirConstant.FHIR_VERSION_HEADER, SupportedFhirVersionEnum.class);
+        AbstractFhirResourceBuilder fhirResourceBuilder = fhirVersionStrategy.getFhirResourceBuilder(supportedFhirVersionEnum);
+
         Throwable throwable = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, CamelExecutionException.class).getCause();
         FhirResourceValidationException fhirResourceValidationException =
                 throwable instanceof FhirResourceValidationException ? ((FhirResourceValidationException) throwable) : null;
 
         IBaseOperationOutcome operationOutcome = fhirResourceValidationException.getOperationOutcome();
 
-        String body = fhirUtil.encodeResource(mimeType, operationOutcome);
-        exchange.getOut().setHeader(Exchange.CONTENT_TYPE, mimeType);
-        exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, "422");
-        exchange.getOut().setBody(body);
+        String body = fhirResourceBuilder.encodeResource(mimeType, operationOutcome);
+        exchange.getMessage().setHeader(Exchange.CONTENT_TYPE, mimeType);
+        exchange.getMessage().setHeader(Exchange.HTTP_RESPONSE_CODE, "422");
+        exchange.getMessage().setBody(body);
     }
 
 }

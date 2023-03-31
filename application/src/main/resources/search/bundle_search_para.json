@@ -1,0 +1,22 @@
+{
+  "Bundle": {
+    "identifier": {
+      "name": "identifier",
+      "type": "token",
+      "path": "identifier",
+      "dataType": "Identifier"
+    },
+    "timestamp": {
+      "name": "timestamp",
+      "type": "date",
+      "path": "timestamp",
+      "dataType": "instant"
+    },
+    "type": {
+      "name": "type",
+      "type": "token",
+      "path": "type",
+      "dataType": "code"
+    }
+  }
+}

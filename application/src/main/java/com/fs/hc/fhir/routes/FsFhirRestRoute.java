@@ -2,6 +2,7 @@ package com.fs.hc.fhir.routes;
 
 import com.fs.hc.fhir.FsFhirGatewayProperties;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.rest.RestParamType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,9 @@ public class FsFhirRestRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        restConfiguration().component("jetty").
+        restConfiguration().component("netty-http").
+                contextPath("fhir").
+                apiComponent("openapi").
                 host(config.getHost()).
                 port(config.getPort()).
                 apiContextPath("api-docs").

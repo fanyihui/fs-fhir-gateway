@@ -3,9 +3,10 @@ package com.fs.hc.fhir.routes;
 import com.fs.hc.fhir.FsFhirGatewayProperties;
 import com.fs.hc.fhir.core.apiprocessor.FhirAPIProcessor;
 import com.fs.hc.fhir.core.apiprocessor.FhirCreateProcessor;
-import com.fs.hc.fhir.core.apiprocessor.FhirResourceValidation;
 import com.fs.hc.fhir.core.apiprocessor.FhirSuccessResponseProcessor;
 import com.fs.hc.fhir.core.bs.IBusinessService;
+import com.fs.hc.fhir.core.resprocessor.FhirResourceR4BBuilder;
+import com.fs.hc.fhir.core.resprocessor.FhirVersionStrategy;
 import com.fs.hc.fhir.core.resprocessor.ResourceIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ public class FhirCreateAPIRoute extends FsBaseRoute {
     @Autowired
     FhirCreateProcessor fhirCreateProcessor;
     @Autowired
-    FhirResourceValidation fhirResourceValidation;
+    FhirVersionStrategy fhirVersionStrategy;
     @Autowired
     IBusinessService businessService;
     @Autowired
@@ -35,8 +36,8 @@ public class FhirCreateAPIRoute extends FsBaseRoute {
                 bean(fhirAPIProcessor, "process").
                 bean(fhirCreateProcessor, "createProcess").
                 choice().when().simple(""+!fsFhirGatewayProperties.isUsingClientGeneratedId()).
-                bean(resourceIDGenerator, "generateResourceId").
-                bean(fhirResourceValidation, "validateResource").
+                bean(resourceIDGenerator, "generateResourceId").end().
+                bean(fhirVersionStrategy, "validateFhirResource(${header.FHIR_VERSION}, ${body})").
                 bean(businessService, "createResource(${body})").
                 bean(fhirSuccessResponseProcessor, "createSuccessful");
     }

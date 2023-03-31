@@ -1,10 +1,12 @@
 package com.fs.hc.fhir.core.exceptionhandler;
 
-import com.fs.hc.fhir.gateway.exception.FhirSearchException;
-import com.fs.hc.fhir.gateway.fhirprocessor.FhirConstant;
-import com.fs.hc.fhir.gateway.model.FhirIssueType;
-import com.fs.hc.fhir.gateway.util.FhirUtil;
-import com.fs.hc.fhir.gateway.util.SupportedFhirVersionEnum;
+
+import com.fs.hc.fhir.core.exception.FhirSearchException;
+import com.fs.hc.fhir.core.model.FhirConstant;
+import com.fs.hc.fhir.core.model.FhirIssueType;
+import com.fs.hc.fhir.core.model.SupportedFhirVersionEnum;
+import com.fs.hc.fhir.core.resprocessor.FhirVersionStrategy;
+import com.fs.hc.fhir.core.resprocessor.AbstractFhirResourceBuilder;
 import org.apache.camel.CamelExecutionException;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FhirSearchExceptionHandler implements Processor {
     @Autowired
-    FhirUtil fhirUtil;
+    FhirVersionStrategy fhirVersionStrategy;
 
     @Override
     public void process(Exchange exchange) throws Exception {
@@ -23,20 +25,21 @@ public class FhirSearchExceptionHandler implements Processor {
         FhirSearchException fhirSearchException = (FhirSearchException) exchange.getProperty(Exchange.EXCEPTION_CAUGHT, CamelExecutionException.class).getCause();
         int code = fhirSearchException.getErrorCode();
 
-        exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, code);
+        exchange.getMessage().setHeader(Exchange.HTTP_RESPONSE_CODE, code);
 
         SupportedFhirVersionEnum supportedFhirVersionEnum = exchange.getIn().getHeader(FhirConstant.FHIR_VERSION_HEADER, SupportedFhirVersionEnum.class);
+        AbstractFhirResourceBuilder fhirResourceBuilder = fhirVersionStrategy.getFhirResourceBuilder(supportedFhirVersionEnum);
+
         String mimeType = exchange.getIn().getHeader(FhirConstant.FHIR_MIMETYPE_HEADER, String.class);
-        IBaseOperationOutcome iBaseOperationOutcome = fhirUtil.createOperationOutcome(
-                supportedFhirVersionEnum,
+        IBaseOperationOutcome iBaseOperationOutcome = fhirResourceBuilder.createOperationOutcomeForException(
                 fhirSearchException.getMessage(),
                 FhirIssueType.INVALID);
 
-        exchange.getOut().setBody(fhirUtil.encodeResource(
+        exchange.getMessage().setBody(fhirResourceBuilder.encodeResource(
                 mimeType,
                 iBaseOperationOutcome));
 
-        exchange.getOut().setHeader(Exchange.CONTENT_TYPE, mimeType);
+        exchange.getMessage().setHeader(Exchange.CONTENT_TYPE, mimeType);
 
     }
 }

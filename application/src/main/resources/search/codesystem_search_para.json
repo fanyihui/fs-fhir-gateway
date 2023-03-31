@@ -1,0 +1,22 @@
+{
+  "CodeSystem": {
+    "name": {
+      "name": "name",
+      "type": "string",
+      "path": "name",
+      "dataType": "string"
+    },
+    "code": {
+      "name": "code",
+      "type": "token",
+      "path": "concept.code",
+      "dataType": "code"
+    },
+    "system": {
+      "name": "system",
+      "type": "uri",
+      "path": "url",
+      "dataType": "uri"
+    }
+  }
+}

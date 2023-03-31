@@ -1,0 +1,16 @@
+{
+  "ValueSet": {
+    "name": {
+      "name": "name",
+      "type": "string",
+      "path": "name",
+      "dataType": "string"
+    },
+    "url": {
+      "name": "url",
+      "type": "uri",
+      "path": "url",
+      "dataType": "uri"
+    }
+  }
+}

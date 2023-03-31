@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+            http://camel.apache.org/schema/spring
+            http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <rest path="/Organization">
+        <get path="/{id}" id="rest-get-org-by-id" produces="application/fhir+json,application/fhir+xml">
+            <description>获取指定id的组织机构资源</description>
+            <param name="id" type="path" dataType="String" description="Organization资源的id"/>
+            <to uri="direct:readResourceById"/>
+        </get>
+        <post id="rest-create-new-org" consumes="application/fhir+json,application/fhir+xml" produces="application/fhir+json,application/fhir+xml">
+            <description>创建新的组织机构</description>
+            <param name="body" type="body" description="The input body is either a HL7 FHIR resource xml representation or JSON representation"/>
+            <responseMessage message="Create Organization Successfully" code="201"/>
+            <to uri="direct:createNewResource"/>
+        </post>
+        <post path="/_search" id="rest-search-org" consumes="application/x-www-form-urlencoded" produces="application/fhir+json,application/fhir+xml">
+            <description>查询组织机构</description>
+            <to uri="direct:searchResources"/>
+        </post>
+        <put path="/{id}" id="rest-put-org" consumes="application/fhir+json,application/fhir+xml" produces="application/fhir+json,application/fhir+xml">
+            <description>更新指定id的组织机构资源</description>
+            <param name="body" type="body" description="The input body is either a HL7 FHIR resource xml representation or JSON representation"/>
+            <param name="id" type="path" dataType="String"/>
+            <to uri="direct:updateResource"/>
+        </put>
+        <delete path="/{id}" id="rest-delete-org">
+            <description>删除指定id的Organization</description>
+            <param name="id" type="path" dataType="String"/>
+            <to uri="direct:deleteResourceById"/>
+        </delete>
+    </rest>
+
+</rests>

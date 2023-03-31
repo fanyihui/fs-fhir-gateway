@@ -12,4 +12,6 @@ public class FhirConstant {
     public static String FHIRSEARCHCONDITION = "searchConditions";
     public static String FHIR_VERSION_ETAG_HEADER = "ETag";
     public static String FHIR_VERSION_LASTMODIFIER_HEADER = "Last-Modified";
+
+    public static String INCLUDEPAYLOADFORDELETE = "INCLUDEPAYLOADFORDELETE";
 }

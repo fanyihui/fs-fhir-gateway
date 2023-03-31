@@ -1,0 +1,16 @@
+{
+  "Practitioner": {
+    "name": {
+      "name": "name",
+      "type": "string",
+      "path": "name",
+      "dataType": "HumanName"
+    },
+    "identifier": {
+      "name": "identifier",
+      "type": "token",
+      "path": "identifier",
+      "dataType": "Identifier"
+    }
+  }
+}
