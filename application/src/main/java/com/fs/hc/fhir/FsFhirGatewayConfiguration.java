@@ -240,22 +240,17 @@ public class FsFhirGatewayConfiguration implements ResourceLoaderAware {
 
     private FhirValidator buildFhirValidator(FhirContext fhirContext, String profileVersionDirectory){
         FhirValidator fhirValidator = fhirContext.newValidator();
+        ValidationSupportChain validationSupportChain = new ValidationSupportChain();
 
-        DefaultProfileValidationSupport defaultProfileValidationSupport = new DefaultProfileValidationSupport(
-                fhirContext);
-        InMemoryTerminologyServerValidationSupport terminologyServerValidationSupport = new InMemoryTerminologyServerValidationSupport(
-                fhirContext);
-        CommonCodeSystemsTerminologyService codeSystemsTerminologyService = new CommonCodeSystemsTerminologyService(
-                fhirContext);
+        validationSupportChain.addValidationSupport(new DefaultProfileValidationSupport(fhirContext));
+        validationSupportChain.addValidationSupport(new InMemoryTerminologyServerValidationSupport(fhirContext));
+        validationSupportChain.addValidationSupport(new CommonCodeSystemsTerminologyService(fhirContext));
+        validationSupportChain.addValidationSupport(new SnapshotGeneratingValidationSupport(fhirContext));
 
         // Create a PrePopulatedValidationSupport which can be used to load custom
         // definitions.
         // load all StructureDefinitions, ValueSets, CodeSystems, etc.
-        SnapshotGeneratingValidationSupport snapSupport = new SnapshotGeneratingValidationSupport(fhirContext);
         PrePopulatedValidationSupport prePopulatedValidationSupport = new PrePopulatedValidationSupport(fhirContext);
-        ValidationSupportContext validationSupportContext = new ValidationSupportContext(
-                defaultProfileValidationSupport);
-        // TODO add code to support different OS
 
         IParser parser = fhirContext.newXmlParser();
         parser.setParserErrorHandler(new StrictErrorHandler());
@@ -315,8 +310,7 @@ public class FsFhirGatewayConfiguration implements ResourceLoaderAware {
             logger.error(fileNotFoundException.getMessage(), fileNotFoundException);
         }
 
-        ValidationSupportChain validationSupportChain = new ValidationSupportChain(defaultProfileValidationSupport,
-                terminologyServerValidationSupport, codeSystemsTerminologyService, prePopulatedValidationSupport);
+        validationSupportChain.addValidationSupport(prePopulatedValidationSupport);
 
         CachingValidationSupport cache = new CachingValidationSupport(validationSupportChain);
         FhirInstanceValidator fhirInstanceValidator = new FhirInstanceValidator(cache);

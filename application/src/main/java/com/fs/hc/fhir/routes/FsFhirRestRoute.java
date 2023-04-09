@@ -13,7 +13,7 @@ public class FsFhirRestRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        restConfiguration().component("netty-http").
+        restConfiguration().component("jetty").
                 contextPath("fhir").
                 apiComponent("openapi").
                 host(config.getHost()).

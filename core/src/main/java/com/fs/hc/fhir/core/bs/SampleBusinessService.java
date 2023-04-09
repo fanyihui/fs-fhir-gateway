@@ -18,7 +18,7 @@ import java.util.List;
 public class SampleBusinessService implements IBusinessService{
     @Override
     public IBaseResource createResource(IBaseResource baseResource) {
-        return null;
+        return baseResource;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class SampleBusinessService implements IBusinessService{
 
     @Override
     public IBaseResource updateResource(IBaseResource baseResource, String id) throws FhirUnknowResourceException {
-        return null;
+        return baseResource;
     }
 
     @Override
